@@ -5,21 +5,39 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
-      POSTGRES_DB: pipeimob
+      POSTGRES_DB: imob
     ports:
-      - "5432:5432"
+      - "5440:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d imob"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build: .
+    volumes:
+      - ./migrations:/app/migrations 
+      - ./alembic.ini:/app/alembic.ini  
+      - ./app:/app/app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      DATABASE_URL: postgresql+psycopg2://user:pass@db:5432/pipeimob
-      API_SECRET_KEY: changeme123
+      DATABASE_URL: postgresql+psycopg2://user:pass@db:5432/imob
+      API_SECRET_KEY: 1234567890abcdef
     ports:
       - "8000:8000"
+      - "5678:5678"
+    command: >
+      sh -c "while true; do
+        echo 'Starting server without reload...';
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --log-level debug;
+        echo 'Server stopped, restarting in 2 seconds...';
+        sleep 2;
+      done"
 
 volumes:
   pgdata:

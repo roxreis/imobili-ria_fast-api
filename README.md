@@ -1,12 +1,9 @@
-# 🏡 API Imobiliária (FastAPI)
-
-API REST para **gerenciar transações imobiliárias** — contempla **transações, partes e comissões**.  
-
-Desenvolvido em **FastAPI + PostgreSQL + Docker**.
+# PipeImob FastAPI
+Sistema API para transações imobiliárias construído com FastAPI, PostgreSQL, e arquitetura em camadas.
 
 ---
 
-## 🚀 Tecnologias utilizadas
+## Tecnologias utilizadas
 - Python 3.11
 - FastAPI
 - SQLAlchemy + Alembic
@@ -18,6 +15,7 @@ Desenvolvido em **FastAPI + PostgreSQL + Docker**.
 
 ## 📂 Estrutura do projeto
 
+´´´
 app/
   main.py              # inicialização FastAPI
   models.py            # modelos SQLAlchemy
@@ -41,6 +39,7 @@ docker-compose.yml
 Dockerfile
 .env.example
 README.md
+´´´
 
 
 ---
@@ -51,7 +50,7 @@ README.md
 Crie um arquivo `.env` na raiz do projeto com base em `.env.example`:
 
 Banco de dados
-DATABASE_URL=postgresql+psycopg2://user:pass@db:5432/pipeimob
+DATABASE_URL=postgresql+psycopg2://user:pass@localhost:5432/pipeimob
 
 Bearer Token fixo
 API_SECRET_KEY=changeme123
@@ -84,6 +83,12 @@ Acesse em: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ### Com Docker
 docker-compose up --build
+
+docker compose exec api uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-level debug
+
+- `main` é o arquivo Python que contém o FastAPI app (ex: `main.py`)
+- `app` é o nome da instância FastAPI dentro do arquivo
+- A flag `--reload` faz reiniciar o servidor automaticamente ao salvar alterações (use só em desenvolvimento)
 
 
 

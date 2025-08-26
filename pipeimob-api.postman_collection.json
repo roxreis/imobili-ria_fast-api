@@ -1,0 +1,196 @@
+{
+  "info": {
+    "name": "PipeImob FastAPI",
+    "description": "API for transactions, parties, and commissions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "d48c8ea4-6348-490d-998a-525b3342f5ee"
+  },
+  "item": [
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"property_code\": \"A-101\", \"sale_value\": 725000}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions"]
+            }
+          }
+        },
+        {
+          "name": "List Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions"]
+            }
+          }
+        },
+        {
+          "name": "Get Transaction",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "{{transaction_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Transaction",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"property_code\": \"A-101\", \"sale_value\": 730000}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "{{transaction_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Transaction",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "{{transaction_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Change Transaction Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"new_status\": \"APPROVED\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "{{transaction_id}}", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Parties",
+      "item": [
+        {
+          "name": "Add Party to Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"type\": \"BUYER\", \"name\": \"Alice Brown\", \"cpf_cnpj\": \"12345678901\", \"email\": \"alice@email.com\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}/parties",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "{{transaction_id}}", "parties"]
+            }
+          }
+        },
+        {
+          "name": "Delete Party",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/parties/{{party_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "parties", "{{party_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Commissions",
+      "item": [
+        {
+          "name": "Create Commission for Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"percentage\": 0.05}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}/commissions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "transactions", "{{transaction_id}}", "commissions"]
+            }
+          }
+        },
+        {
+          "name": "Mark Commission as Paid",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer changeme123" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/commissions/{{commission_id}}/pay",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "commissions", "{{commission_id}}", "pay"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "transaction_id", "value": "" },
+    { "key": "party_id", "value": "" },
+    { "key": "commission_id", "value": "" }
+  ]
+}
