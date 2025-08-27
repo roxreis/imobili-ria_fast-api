@@ -100,7 +100,7 @@ Acesse em: [http://localhost:8000(http://localhost:8000/docs)
 ### Com Docker
 docker compose up --build
 
-Acesse em: [http://localhost:8000](http://localhost:8000/docs)
+Acesse em: http://localhost:8000
 
 ---
 ## Documentação do Swagger
