@@ -15,8 +15,8 @@ class PartyRepository:
         self.db.refresh(party)
         return party
 
-    def get_by_id(self, party_id: str):
-        return self.db.query(Party).filter_by(id=party_id).first()
+    def get_party_by_id(self, party_id: str):
+        return self.db.query(Party).filter_by(party_id=party_id).first()
 
     def delete(self, party: Party):
         self.db.delete(party)

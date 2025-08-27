@@ -1,3 +1,4 @@
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 from typing import Optional, List
 from datetime import datetime
 from decimal import Decimal
@@ -6,29 +7,47 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, EmailStr
 from app.models import TransactionStatus
+from app.validators import validate_cpf_cnpj, get_cpf_cnpj_type 
 
 
 class PartyType(str, Enum):
     BUYER = "BUYER"
     SELLER = "SELLER"
-    AGENT = "AGENT"
     BROKER = "BROKER"
 
 
 class PartyBase(BaseModel):
     type: PartyType
     name: str
-    cpf_cnpj: str 
+    cpf_cnpj: str
     email: Optional[EmailStr] = None
+
+    @field_validator('cpf_cnpj')
+    @classmethod
+    def validate_and_format_cpf_cnpj(cls, v):
+        return validate_cpf_cnpj(v)
+
+    @field_validator('document_type', mode='before', check_fields=False)
+    @classmethod
+    def set_document_type(cls, v, values):
+        if 'cpf_cnpj' in values.data:
+            return get_cpf_cnpj_type(values.data['cpf_cnpj'])
+        return v
 
 
 class PartyCreate(PartyBase):
     transaction_id: UUID | str
+    type: PartyType
+    cpf_cnpj: str
+    email: Optional[EmailStr] = None
 
 
 class Party(PartyBase):
     party_id: UUID | str
     transaction_id: UUID | str
+    type: PartyType
+    cpf_cnpj: str
+    email: Optional[EmailStr] = None
     created_at: datetime
     updated_at: datetime
 

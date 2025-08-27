@@ -4,6 +4,7 @@ import os
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
+
 from app.database import get_db
 from app.service.commision import CommissionService
 from app.service.transaction import get_concrete_transaction_service
@@ -31,7 +32,7 @@ def validate_token(credentials: HTTPAuthorizationCredentials = Depends(security)
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Invalid or missing token")
     return True
 
-@router.post("/", response_model=CommissionOut, status_code=status.HTTP_201_CREATED)
+@router.post("/transactions/{transaction_id}/commissions", response_model=CommissionOut, status_code=status.HTTP_201_CREATED)
 def create_commission(
     payload: CommissionCreate, 
     service: CommissionService = Depends(get_commission_service),

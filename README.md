@@ -15,31 +15,47 @@ Sistema API para transações imobiliárias construído com FastAPI, PostgreSQL,
 
 ## 📂 Estrutura do projeto
 
-´´´
-app/
-  main.py              # inicialização FastAPI
-  models.py            # modelos SQLAlchemy
-  schemas.py           # validações Pydantic
-  database.py          # conexão e sessão
-  crud/
-     transactions.py   # operações de transações
-     partes.py
-     comissoes.py
-  routers/
-     transacoes.py
-     partes.py
-     comissoes.py
-  core/
-     config.py          # env settings
-     auth.py            # Bearer token
-     exceptions.py
-alembic/               # migrations
-tests/                 # pytest
-docker-compose.yml
-Dockerfile
-.env.example
-README.md
-´´´
+```sh
+  
+  app/
+    api/
+      routers/
+        transactions.py
+        parties.py
+        comissoes.py
+    interfaces/
+        abstract/
+            transaction_interface.py
+        concrete/
+            transaction_concrete.py
+    repository/
+        transactions.py   # operações de transações
+        party.py
+        commissions.py
+    service/
+        transactions.py   # operações de transações
+        party.py
+        commisson.py
+    tests/
+      unit/
+        __init__.py
+        test_commission.py   # operações de transações
+        test_party.py
+        test_transaction.py
+    __init__.py
+    alembic.ini
+    database.py
+    main.py
+    models.py
+    chemas.py
+    validators.py
+migrations/
+  versions/
+    0c635a74006a_create_tables.py
+  env.py
+  README  
+  script.py.mako
+```
 
 
 ---
@@ -53,7 +69,7 @@ Banco de dados
 DATABASE_URL=postgresql+psycopg2://user:pass@localhost:5432/pipeimob
 
 Bearer Token fixo
-API_SECRET_KEY=changeme123
+API_SECRET_KEY=1234567890abcdef
 
 
 
@@ -77,24 +93,21 @@ uvicorn app.main:app --reload
 
 
 
-Acesse em: [http://localhost:8000/docs](http://localhost:8000/docs)
+Acesse em: [http://localhost:8000(http://localhost:8000/docs)
 
 ---
 
 ### Com Docker
-docker-compose up --build
+docker compose up --build
 
-docker compose exec api uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-level debug
-
-- `main` é o arquivo Python que contém o FastAPI app (ex: `main.py`)
-- `app` é o nome da instância FastAPI dentro do arquivo
-- A flag `--reload` faz reiniciar o servidor automaticamente ao salvar alterações (use só em desenvolvimento)
-
-
-
-Acesse em: [http://localhost:8000/docs](http://localhost:8000/docs)
+Acesse em: [http://localhost:8000](http://localhost:8000/docs)
 
 ---
+## Documentação do Swagger
+A documentação da API está disponível através do Swagger. 
+Após iniciar os containers Docker, você pode acessar a documentação do Swagger pelo seguinte link:
+
+http://localhost:8000/docs
 
 ## 🔑 Autenticação
 Todos os endpoints da API requerem **Bearer Token**:  
@@ -108,22 +121,6 @@ O valor de `API_SECRET_KEY` vem do `.env`.
 ---
 
 ## 📌 Endpoints principais
-
-### Transações
-- `POST /api/v1/transacoes`
-- `GET /api/v1/transacoes` (filtros + paginação)
-- `GET /api/v1/transacoes/{id}`
-- `PUT /api/v1/transacoes/{id}`
-- `PATCH /api/v1/transacoes/{id}/status`
-- `DELETE /api/v1/transacoes/{id}`
-
-### Partes
-- `POST /api/v1/transacoes/{id}/partes`
-- `DELETE /api/v1/partes/{id}`
-
-### Comissões
-- `POST /api/v1/transacoes/{id}/comissoes`
-- `POST /api/v1/comissoes/{id}/pagar`
 
 ---
 
@@ -163,8 +160,9 @@ CRIADA -> EM_ANALISE -> APROVADA -> FINALIZADA
 5. Logs monitorados pelo **CloudWatch**.  
 
 ---
-
-## ✅ Próximos passos
-- Implementar regras em `partes.py` e `comissoes.py`
-- Criar **migrations Alembic**
-- Adicionar **testes pytest** para cobrir as regras de negócio
+## 📋 Testes
+Foram criados uniários com pytest.
+Para rodar os testes:
+```
+docker compose exec api pytest app/tests/unit
+```

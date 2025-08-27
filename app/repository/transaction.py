@@ -26,12 +26,18 @@ class TransactionRepository:
 
         return query.offset(offset).limit(limit).all()
 
-    def update(self, transaction: Transaction) -> Transaction:
+    def update_transaction(self, transaction: Transaction) -> Transaction:
         self.session.commit()
         self.session.refresh(transaction)
         return transaction
 
     def delete(self, transaction: Transaction) -> None:
         self.session.delete(transaction)
-        self.session.commit()      
+        self.session.commit() 
+        
+    def update_status(self, transaction: Transaction, new_status: str) -> Transaction:
+        transaction.status = new_status
+        self.session.commit()
+        self.session.refresh(transaction)
+        return transaction
 

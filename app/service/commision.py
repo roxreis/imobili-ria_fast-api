@@ -25,11 +25,11 @@ class CommissionService:
         return self.repository.create_commission(commission)
 
     def pay_commission(self, commission_id: str) -> Commission:
-        commission = self.repository.get_by_id(commission_id)
+        commission = self.repository.get_commission_by_id(commission_id)
         if not commission:
             raise HTTPException(404, "Commission not found")
         commission.paid = True
-        return self.repository.update(commission)
+        return self.repository.update_status_commission(commission)
 
     def get_calculate_commission(self, commission: dict) -> float:
         transaction = self.transaction_concrete.get_transaction_service(commission['transaction_id'])

@@ -29,7 +29,7 @@ def validate_token(credentials: HTTPAuthorizationCredentials = Depends(security)
     return True
 
 
-@router.post("/api/v1/transactions", response_model=TransactionOut, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=TransactionOut, status_code=status.HTTP_201_CREATED)
 def create_transaction(
     payload: TransactionCreate,
     service: TransactionService = Depends(get_transaction_service),
@@ -37,7 +37,7 @@ def create_transaction(
 ):
     return service.create_transaction_service(payload)
 
-@router.get("/api/v1/transactions", response_model=List[TransactionOut])
+@router.get("/", response_model=List[TransactionOut])
 def list_transactions(
     t_status: Optional[TransactionStatus] = None,
     property_code: Optional[str] = None,
@@ -58,7 +58,7 @@ def list_transactions(
         response.headers["X-Total-Count"] = str(total)
     return transactions
 
-@router.get("/api/v1/transactions/{transaction_id}", response_model=TransactionOut)
+@router.get("/{transaction_id}", response_model=TransactionOut)
 def get_transaction(
     transaction_id: str,
     service: TransactionService = Depends(get_transaction_service),
@@ -66,7 +66,7 @@ def get_transaction(
 ):
     return service.get_transaction_service(transaction_id)
 
-@router.put("/api/v1/transactions/{transaction_id}", response_model=TransactionOut)
+@router.put("/{transaction_id}", response_model=TransactionOut)
 def update_transaction(
     transaction_id: str,
     payload: TransactionBase,
@@ -75,16 +75,16 @@ def update_transaction(
 ):
     return service.update_transaction(transaction_id, payload)
 
-@router.patch("/api/v1/transactions/{tx_id}/status", response_model=TransactionOut)
+@router.patch("/{transaction_id}/status", response_model=TransactionOut)
 def update_status(
-    tx_id: str,
+    transaction_id: str,
     payload: StatusUpdate,
     service: TransactionService = Depends(get_transaction_service),
     authenticated: bool = Depends(validate_token)
 ):
-    return service.change_status(tx_id, payload.new_status)
+    return service.change_transaction_status(transaction_id, payload.new_status)
 
-@router.delete("/api/v1/transactions/{transaction_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{transaction_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_transaction(
     transaction_id: str,
     service: TransactionService = Depends(get_transaction_service),

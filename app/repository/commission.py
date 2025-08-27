@@ -12,10 +12,10 @@ class CommissionRepository:
         self.db.refresh(commission)
         return commission
 
-    def get_by_id(self, commission_id: str):
-        return self.db.query(Commission).filter_by(id=commission_id).first()
+    def get_commission_by_id(self, commission_id: str):
+        return self.db.query(Commission).filter_by(commission_id=commission_id).first()
 
-    def update(self, commission: Commission):
+    def update_status_commission(self, commission: Commission):
         self.db.commit()
         self.db.refresh(commission)
         return commission

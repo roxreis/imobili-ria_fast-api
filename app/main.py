@@ -59,8 +59,8 @@ async def auth_middleware(request, call_next):
     return response
 
 app.include_router(transactions_router, prefix="/api/v1/transactions", tags=["transactions"])
-app.include_router(parties_router, prefix="/api/v1/parties", tags=["parties"])
-app.include_router(commissions_router, prefix="/api/v1/commissions", tags=["commissions"])
+app.include_router(parties_router, prefix="/api/v1", tags=["parties"])
+app.include_router(commissions_router, prefix="/api/v1", tags=["commissions"])
 
 @app.get("/")
 async def root():
