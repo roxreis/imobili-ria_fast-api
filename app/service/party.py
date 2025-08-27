@@ -42,10 +42,6 @@ def validate(value: str) -> None:
     if not validate_cpf(value):
         raise ValueError('CPF inválido')
 
-def is_buyer_validate(value: str):
-    if value.lower() == 'buyer':
-        raise ValueError('O tipo de party não pode ser comprador')
-
 
 class PartyService:
     def __init__(self, db: Session):
@@ -53,7 +49,6 @@ class PartyService:
 
     def add_party_service(self, party_data: PartyCreate) -> Party:
         validate(party_data.cpf_cnpj)
-        is_buyer_validate(party_data.type)
 
         existing_party = self.repository.find_party_by_cpf_or_email(
             cpf_cnpj=party_data.cpf_cnpj,

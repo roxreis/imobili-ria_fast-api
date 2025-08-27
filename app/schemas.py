@@ -1,4 +1,3 @@
-from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, List
 from datetime import datetime
 from decimal import Decimal
@@ -6,7 +5,7 @@ from enum import Enum
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, EmailStr
-from app.models import TransactionStatus, PartyType
+from app.models import TransactionStatus
 
 
 class PartyType(str, Enum):
@@ -24,31 +23,33 @@ class PartyBase(BaseModel):
 
 
 class PartyCreate(PartyBase):
-    transaction_id: UUID
+    transaction_id: UUID | str
 
 
 class Party(PartyBase):
-    party_id: UUID
-    transaction_id: UUID
+    party_id: UUID | str
+    transaction_id: UUID | str
     created_at: datetime
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
 
 class PartyOut(PartyBase):
-    party_id: UUID
+    party_id: UUID | str
 
     class Config:
         orm_mode = True
 
 
 class CommissionCreate(BaseModel):
-    percentage: Decimal = Field(..., gt=0, le=1)
+    percentage: Decimal 
+    transaction_id: UUID | str
 
 
 class CommissionOut(BaseModel):
-    commission_id: UUID
+    commission_id: UUID | str
     percentage: Decimal
+    transaction_id_fk: UUID | str
     calculated_amount: Decimal
     paid: bool
 
@@ -66,7 +67,7 @@ class TransactionCreate(TransactionBase):
 
 
 class TransactionOut(TransactionBase):
-    transaction_id: UUID
+    transaction_id: UUID | str
     status: TransactionStatus
     created_at: datetime
     updated_at: datetime

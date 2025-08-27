@@ -6,7 +6,7 @@ class CommissionRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, commission: Commission):
+    def create_commission(self, commission: Commission):
         self.db.add(commission)
         self.db.commit()
         self.db.refresh(commission)

@@ -1,11 +1,21 @@
 from __future__ import annotations
 
+from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
 from uuid import UUID
 from app.repository.transaction import TransactionRepository
 from app.models import Transaction
+from app.database import get_db
 from app.schemas import TransactionCreate, TransactionBase
-from fastapi import HTTPException
+from app.interfaces.abstract.transaction_interface import TransactionInterface
+from app.interfaces.concrete.transaction_concrete import TransactionConcrete
+
+
+def get_concrete_transaction_service(
+        db=Depends(get_db)
+) -> TransactionInterface:
+    return TransactionConcrete(db)
+
 
 class TransactionService:
     def __init__(self, db: Session):
@@ -24,7 +34,7 @@ class TransactionService:
         )
         return self.repository.create_transaction(transaction)
 
-    def get_transaction(self, transaction_id: UUID | str) -> Transaction:
+    def get_transaction_service(self, transaction_id: UUID | str) -> Transaction:
         transaction = self.repository.get_transaction_by_id(transaction_id)
         if not transaction:
             raise HTTPException(404, "Transaction not found")
@@ -39,12 +49,12 @@ class TransactionService:
         return self.repository.list_transactions_repository(filters, limit, offset)
 
     def update_transaction(self, transaction_id: str, transaction_data: TransactionBase):
-        transaction = self.get_transaction(transaction_id)
+        transaction = self.get_transaction_service(transaction_id)
         for key, value in transaction_data.dict().items():
             setattr(transaction, key, value)
             
         return self.repository.update(transaction)
 
     def delete_transaction(self, transaction_id: str):
-        transaction = self.get_transaction(transaction_id)
+        transaction = self.get_transaction_service(transaction_id)
         self.repository.delete(transaction)
