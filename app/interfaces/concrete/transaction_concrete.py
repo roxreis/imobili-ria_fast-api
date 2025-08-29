@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 from app.schemas import TransactionCreate
-from app.interfaces.abstract.transaction_interface import TransactionInterface
+from app.interfaces.abstract.transaction_abstract import TransactionInterface
 from app.models import Transaction
 
 

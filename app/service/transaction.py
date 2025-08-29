@@ -7,7 +7,7 @@ from app.repository.transaction import TransactionRepository
 from app.models import Transaction
 from app.database import get_db
 from app.schemas import TransactionCreate, TransactionBase, PartyType
-from app.interfaces.abstract.transaction_interface import TransactionInterface
+from app.interfaces.abstract.transaction_abstract import TransactionInterface
 from app.interfaces.concrete.transaction_concrete import TransactionConcrete
 
 
@@ -57,6 +57,12 @@ class TransactionService:
 
     def delete_transaction(self, transaction_id: str):
         transaction = self.get_transaction_service(transaction_id)
+        if not transaction:
+            raise HTTPException(404, "Transaction not found")
+        
+        if transaction.status == "APPROVED":
+            raise HTTPException(400, "Approved transactions cannot be deleted")
+        
         self.repository.delete(transaction)
         
     def change_transaction_status(self, transaction_id: str, new_status: PartyType):
