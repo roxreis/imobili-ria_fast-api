@@ -85,9 +85,6 @@ source venv/bin/activate
 Instalar dependências
 pip install -r requirements.txt
 
-Rodar migrações (Alembic)
-alembic upgrade head
-
 Iniciar servidor
 uvicorn app.main:app --reload
 
