@@ -97,12 +97,16 @@ Verificar se está online em: http://localhost:8000
 ---
 
 ### Com Docker
+```sh
 docker compose build
-
 docker compose up -d
+```
 
-Acesse em: se está online http://localhost:8000
-### Não precisa rodar migration
+Verificar se está online em: http://localhost:8000
+### Migrations
+```sh
+docker compose exec api alembic upgrade head
+```
 
 ---
 ## Documentação do Swagger
