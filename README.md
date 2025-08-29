@@ -91,16 +91,21 @@ alembic upgrade head
 Iniciar servidor
 uvicorn app.main:app --reload
 
+Mudar nome .env.example para .env para carregar variáveis de ambiente
 
 
-Acesse em: [http://localhost:8000(http://localhost:8000/docs)
+
+Verificar se está online em: http://localhost:8000
 
 ---
 
 ### Com Docker
-docker compose up --build
+docker compose build
 
-Acesse em: http://localhost:8000
+docker compose up -d
+
+Acesse em: se está online http://localhost:8000
+### Não precisa rodar migration
 
 ---
 ## Documentação do Swagger
@@ -109,20 +114,18 @@ Após iniciar os containers Docker, você pode acessar a documentação do Swagg
 
 http://localhost:8000/docs
 
+### Authorized Swagger = 1234567890abcdef
+
 ## 🔑 Autenticação
 Todos os endpoints da API requerem **Bearer Token**:  
 
-Authorization: Bearer <API_SECRET_KEY>
+Authorization: Bearer 1234567890abcdef
+
+
+O valor de `API_SECRET_KEY` vem do `docker-compose.yml`.  
 
 
 
-O valor de `API_SECRET_KEY` vem do `.env`.  
-
----
-
-## 📌 Endpoints principais
-
----
 
 ## 📋 Regras de Negócio
 - Transação só pode ser **APROVADA** se tiver:
